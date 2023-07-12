@@ -1,0 +1,11 @@
+header {
+    height: 80px;
+}
+
+header img {
+    height: 60px;
+}
+
+header h1 {
+    margin-left: 20px;
+}
