@@ -18,3 +18,26 @@
 // Quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle.
 // Superbonus 2
 // Quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste.
+
+//FUNZIONE CHE FA SCEGLIERE IL LIVELLO ALL'UTENTE
+function setLevel(event) {
+    const level = document.getElementById("level").value;
+    console.log("livello selezionato: ", level);
+    let numSquare;
+    switch (level) {
+        case "1":
+        default:
+        numSquare = 100;
+        break;
+        case "2":
+        numSquare = 81;
+        break;
+        case "3":
+        numSquare = 49;
+        break;
+    }
+    let squareforSide = Math.sqrt(numSquare);
+    console.log("celle per lato: ", squareforSide);
+    generateBomb(numSquare);
+    generaGriglia(numSquare, squareforSide);
+}
