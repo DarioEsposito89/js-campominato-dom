@@ -98,10 +98,12 @@ function generaCella(numSquare, squareforSide) {
 
 // FUNZIONE CHE COLORA LE CELLE AL CLICK
 function coloraCella() {
+    // console.log(this.innerText);
     let num = parseInt(this.innerText);
+    // console.log(attempts, max_attempt);
     attempts++;
 
-// CASO IN CUI L'UTENTE VINCE
+    // CASO IN CUI L'UTENTE VINCE
 if(attempts == max_attempt){
     alert("Complimenti, hai vinto! Non hai clickato su nessuna bomba!");
     setTimeout(() => {
@@ -115,10 +117,33 @@ if(attempts == max_attempt){
     this.innerHTML = `<img src="img/bomb.png">`;
     gameOver();
     } else {
-    this.style.backgroundColor = "#6495ed";
+    this.style.backgroundColor = "green";
     this.style.color = "white";
     }   
     this.classList.remove("pointer");
     this.removeEventListener("click", coloraCella);
 }
 
+// FUNZIONE CHE GESTISCE LA FINE DEL GIOCO
+function gameOver() {
+    alert("Hai totalizzato un punteggio di : " + parseInt(attempts - 1));
+    let caselleRestanti = document.getElementsByClassName("box");
+
+    for (let i = 0; i < caselleRestanti.length; i++) {
+    let rimuoviEvento = caselleRestanti[i];
+    rimuoviEvento.classList.remove("pointer");
+    rimuoviEvento.removeEventListener("click", coloraCella);
+    for (let n = 0; n < bombs.length; n++) {
+        if (bombs[n] == rimuoviEvento.innerText) {
+        // console.log(bombs[n], rimuoviEvento.innerText);
+        rimuoviEvento.style.backgroundColor = "red";
+        rimuoviEvento.innerHTML = `<img src="img/mine.png">`;
+        }
+    }
+}
+setTimeout(() => {
+    location.reload();
+    }, 2000);
+}
+
+document.getElementById("play").addEventListener("click", setLevel);
