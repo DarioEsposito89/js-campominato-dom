@@ -19,6 +19,17 @@
 // Superbonus 2
 // Quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste.
 
+// FUNZIONE CHE GENERA NUMERI RANDOM
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+    }
+    const bombNumber = 16;
+    const bombs = [];
+    let max_attempt;
+    let attempts = 0;
+
 //FUNZIONE CHE FA SCEGLIERE IL LIVELLO ALL'UTENTE
 function setLevel(event) {
     const level = document.getElementById("level").value;
@@ -41,3 +52,73 @@ function setLevel(event) {
     generateBomb(numSquare);
     generaGriglia(numSquare, squareforSide);
 }
+
+//FUNZIONE CHE GENERA LE BOMBE
+function generateBomb(numSquare) {
+    max_attempt = numSquare - bombNumber;
+    bombs.length = 0; // riazzera l'array delle bombe ogni volta che si sceglie la difficoltà
+    while (bombs.length < bombNumber) {
+        let numberBomb = getRandomInt(1, numSquare);
+        if (!bombs.includes(numberBomb)) {
+        bombs.push(numberBomb);
+        }
+    }
+    console.log(bombs);
+    }
+
+// FUNZIONE CHE GENERA LA GRIGLIA
+function generaGriglia(numSquare, squareforSide) {
+    console.log("numero di celle totali: ", numSquare);
+    const grid = document.getElementById("grid");
+
+    grid.innerHTML = "";
+
+    let row = document.createElement("div");
+    row.classList = ("class"); 
+    row.classList = ("gridrow");
+
+    for (let i = 1; i <= numSquare; i++) {
+        const square = generaCella(i, squareforSide);
+        row.append(square);
+    }
+    grid.append(row);
+}
+
+// FUNZIONE CHE GENERA I QUADRATI
+function generaCella(numSquare, squareforSide) {
+    let square = document.createElement("div");
+    square.setAttribute("class", "box");
+    square.style.width = `calc(100% / ${squareforSide})`;
+    square.style.height = `calc(100% / ${squareforSide})`;
+    square.classList.add("pointer");
+    square.innerHTML = `<span>${numSquare}</span>`;
+    square.addEventListener("click", coloraCella);
+    return square;
+}
+
+// FUNZIONE CHE COLORA LE CELLE AL CLICK
+function coloraCella() {
+    let num = parseInt(this.innerText);
+    attempts++;
+
+// CASO IN CUI L'UTENTE VINCE
+if(attempts == max_attempt){
+    alert("Complimenti, hai vinto! Non hai clickato su nessuna bomba!");
+    setTimeout(() => {
+        location.reload();
+    }, 2000);
+    }
+    
+
+    if (bombs.includes(num)) {
+    this.style.backgroundColor = "red";
+    this.innerHTML = `<img src="img/bomb.png">`;
+    gameOver();
+    } else {
+    this.style.backgroundColor = "#6495ed";
+    this.style.color = "white";
+    }   
+    this.classList.remove("pointer");
+    this.removeEventListener("click", coloraCella);
+}
+
